@@ -2,6 +2,7 @@
 require "getoptlong"
 require "pp"
 require 'fileutils'
+require 'rubyhacks'
 # require '/home/edmundhighcock/Code/coderunner/trunk/box_of_tricks.rb'
 $default_host_manager_store = ENV['HOME'] + '/.host_manager_data.rb'
 
