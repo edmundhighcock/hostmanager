@@ -1,0 +1,114 @@
+#!/usr/bin/env ruby
+
+
+begin
+  require 'hostmanager'
+rescue LoadError
+  require 'rubygems'
+  require 'hostmanager'
+end
+#!/usr/local/bin/ruby
+require "getoptlong"
+require "pp"
+require 'fileutils'
+require 'rubyhacks'
+
+$script_folder = File.dirname(File.expand_path(__FILE__)) #i.e. where this script is
+
+
+	
+opts = GetoptLong.new(
+	["--delete", "-d", GetoptLong::NO_ARGUMENT],
+	["--soft", "-s", GetoptLong::NO_ARGUMENT],
+	["--test", "-T", GetoptLong::NO_ARGUMENT],
+	["--options", "-o", GetoptLong::REQUIRED_ARGUMENT],
+	["--zeroconf", "-z",GetoptLong::NO_ARGUMENT]
+)
+$delete = false
+$x_forwarding = true
+opts.each do |opt, arg|
+       
+	case opt
+	when "--delete"
+		$delete=true
+	when "--soft"
+		$soft=true
+	when "--test"
+		$test = true
+	when "--options"
+		$options = '-' + arg
+# 		p $options
+	when "--zeroconf"
+		$zeroconf = true
+	end
+end
+
+# task = ARGV[0]
+$command = nil
+
+
+HostManager.phoenix($default_host_manager_store) do |host_manager|
+	host_manager.option_string = $options
+	case ARGV[0]
+	when 'x'
+		host_manager.option_string ? host_manager.option_string << 'X' : host_manager.option_string = '-X' 
+		host = ARGV[-1]
+		raise 'Only one host required for login' unless host.length == 1
+		$command = host_manager.login(host)
+	when 'l', 'login'
+		host = ARGV[-1]
+		raise 'Only one host required for login' unless host.length == 1
+		$command = host_manager.login(host)
+	when 'list'
+		puts "\n####### Host Manager: Available Hosts #######\n\n"
+		host_manager.host_list.each do |letter, string|
+			puts "#{letter} --> #{string}"
+		end
+		puts "\n#############################################\n\n"
+	when 'add'
+		raise 'A host label can only be one letter or symbol' unless ARGV[1].length == 1
+		(puts 'This host already exists. Do you want to replace it? Press enter to replace it or Ctrl + C to cancel.'; $stdin.gets) if host_manager.host_list[ARGV[1]]
+		host_manager.host_list[ARGV[1]] = ARGV[2] + ($zeroconf ? "(zeroconf)" : "")
+	when 'pf', 'portforward'
+		$command = host_manager.port_forward(*ARGV[-1].split(//))
+	when 'ssh'
+		puts host_manager.hosts[ARGV[-1]].ssh
+	when 'scp'
+		$command = host_manager.scp(*(ARGV[-2].split(":") + ARGV[-1].split(":")))
+	when 'rsync'
+		$command = host_manager.rsync(*(ARGV[-2].split(":") + ARGV[-1].split(":")))
+	when 'str'
+		puts host_manager.host_list[ARGV[-1]]
+	when 'sshfs'
+		$command = host_manager.sshfs(*ARGV[-2].split(":"), ARGV[-1])
+	when 'co'
+		case ARGV[-2]
+		when "sourceforge", "sf"
+			$command = "svn co https://#{ARGV[-1]}.svn.sourceforge.net/svnroot/#{ARGV[-1]}"
+		end
+	when 'addsync'
+		Hash.phoenix(ENV['HOME'] + '/.host_manager_sync_data.rb') do |syncs|
+			syncs[ARGV[-3]] ||= {}
+			(puts 'This sync folder already exists. Do you want to replace it? Press enter to replace it or Ctrl + C to cancel.'; $stdin.gets) if syncs[ARGV[-3]][ARGV[-2]]
+			syncs[ARGV[-3]][ARGV[-2]] = ARGV[-1]
+			syncs
+		end
+	when 'sync'
+		Hash.phoenix(ENV['HOME'] + '/.host_manager_sync_data.rb') do |syncs|
+			raise "Unknown content: content #{ARGV[-2]}" unless syncs[ARGV[-2]]
+			f, s = ARGV[-1].split(//)
+			$command = host_manager.rsync(f, syncs[ARGV[-2]][f], s, syncs[ARGV[-2]][s])
+			syncs
+		end
+	when 'listsyncs'
+		Hash.phoenix(ENV['HOME'] + '/.host_manager_sync_data.rb') do |syncs|
+			pp syncs
+		end
+	end
+end
+
+if $command
+	puts $command
+	exec $command unless $test
+end
+
