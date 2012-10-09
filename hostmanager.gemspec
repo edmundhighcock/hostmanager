@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md",
+    "README.md.orig",
     "README.rdoc"
   ]
   s.files = [
@@ -27,6 +28,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "bin/hm",
+    "hostmanager.gemspec",
     "lib/hostmanager.rb",
     "test/helper.rb",
     "test/test_hostmanager.rb"
