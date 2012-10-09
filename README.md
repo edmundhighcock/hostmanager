@@ -6,10 +6,10 @@ A class and command line utility that allows simple management of ssh hosts and 
 
 == Examples
 
-hm add m myname@myhost
-hm x m
-hm list
-hm scp m:my_file h:. 
+ hm add m myname@myhost
+ hm x m
+ hm list
+ hm scp m:my_file h:. 
 
 == Command Manual
 
