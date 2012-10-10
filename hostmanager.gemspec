@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "hostmanager"
-  s.version = "1.2.1"
+  s.version = "1.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Edmund Highcock"]
@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
   s.licenses = ["GPLv3"]
   s.rdoc_options = ["--main", "lib/hostmanager.rb"]
   s.require_paths = ["lib"]
-  s.required_ruby_version = Gem::Requirement.new("> 1.9.1")
+  s.required_ruby_version = Gem::Requirement.new(">= 1.9.1")
   s.rubygems_version = "1.8.24"
   s.summary = "Simple class/command line utility for management of remote hosts."
 
