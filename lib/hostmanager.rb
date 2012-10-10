@@ -1,23 +1,3 @@
-#= Hostmanager
-#
-#== Summary
-#
-#A class and command line utility that allows simple management of ssh hosts and remote folders. E.g. logging in to a remote server becomes as easy as 'hm l y'.
-#
-#== Examples
-#
-# hm add m myname@myhost
-# hm x m
-# hm list
-# hm scp m:my_file h:. 
-#
-#== Command Manual
-#
-#=== Commands
-#
-#  hm add <letter> myname@myhost.com --- Add a host to be referred to with <letter>
-#  hm list -- List all hosts
-#  hm x <letter> 
 
 
 
@@ -145,6 +125,30 @@ class Host
 	end
 
 end
+
+#= Hostmanager
+#
+#== Summary
+#
+#A class and command line utility that allows simple management of ssh hosts and remote folders. E.g. logging in to a remote server becomes as easy as 'hm l y'.
+#
+#== Examples
+#
+# hm add m myname@myhost
+# hm x m
+# hm list
+# hm scp m:my_file h:. 
+#
+#== Command Manual
+#
+#=== Commands
+#
+#  hm add <letter> myname@myhost.com --- Add a host to be referred to with <letter>
+#  hm list -- List all hosts
+#  hm l <letter> -- Login to a host with ssh 
+#  hm x <letter> -- Login to a host with ssh -X
+#  hm scp <letter1>:<file1> <letter2>:<file2> --- Copy file1 from host letter1 to host letter2
+#
 
 class HostManager
 	attr_accessor :host_list, :hosts, :forwards, :content_list, :option_string
