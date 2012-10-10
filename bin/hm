@@ -104,6 +104,9 @@ HostManager.phoenix($default_host_manager_store) do |host_manager|
 		Hash.phoenix(ENV['HOME'] + '/.host_manager_sync_data.rb') do |syncs|
 			pp syncs
 		end
+	when 'help'
+		puts "For help, please use the internal docmentation by typing 
+$ ri HostManager"
 	end
 end
 
