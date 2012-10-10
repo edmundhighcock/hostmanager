@@ -158,6 +158,8 @@ class HostManager
 			set(key, value)
 		end
 		@host_list ||= {}
+		@host_list['h'] = ''
+		@host_list['l'] = ENV['USER'] + '@localhost'
 		@host_list.each do |letter, string|
 			string.sub!(/:$/, '')
 		end
@@ -168,7 +170,7 @@ class HostManager
 		@host_list.each do |letter, host_string|
 			if @forwards[letter]
 				@hosts[letter] = Host::Forwarded.from_string(host_string, @forwards[letter])
-				unless (string =  "#{@hosts[letter].ssh} cd . 2>null"; system string)
+				unless (string =  "#{@hosts[letter].ssh} cd . 2>/dev/null"; system string)
 # 					puts 'port failed'
 					@forwards.delete(letter)
 					@hosts[letter] = Host.from_string(host_string)
@@ -184,6 +186,21 @@ class HostManager
 			end
 		end
 	end
+	def add(letter, hosturl)
+		raise 'A host label can only be one letter or symbol' unless letter.length == 1
+		case letter
+		when "h"
+			puts "h can only be used to mean 'home', i.e. an empty string"
+			return
+		when "l"
+			puts "l can only be used to mean $USER@localhost"
+			return
+		else
+			(puts 'This host already exists. Do you want to replace it? Press enter to replace it or Ctrl + C to cancel.'; $stdin.gets) if host_list[letter]
+			host_list[letter] = hosturl
+		end
+	end
+
 	def inspect
 		@hosts = "Don't edit this variable"
 		hash = instance_variables.inject({}) do |hash, var|

@@ -66,9 +66,9 @@ HostManager.phoenix($default_host_manager_store) do |host_manager|
 		end
 		puts "\n#############################################\n\n"
 	when 'add'
-		raise 'A host label can only be one letter or symbol' unless ARGV[1].length == 1
-		(puts 'This host already exists. Do you want to replace it? Press enter to replace it or Ctrl + C to cancel.'; $stdin.gets) if host_manager.host_list[ARGV[1]]
-		host_manager.host_list[ARGV[1]] = ARGV[2] + ($zeroconf ? "(zeroconf)" : "")
+		#host_manager.host_list[ARGV[1]] = ARGV[2] + ($zeroconf ? "(zeroconf)" : "")
+		(puts "Please specify a letter and a URL; e.g. hm add m myname@myhost.com"; exit) unless ARGV[1].is_a? String and ARGV[2].is_a? String
+		host_manager.add(ARGV[1], ARGV[2] + ($zeroconf ? "(zeroconf)" : ""))
 	when 'pf', 'portforward'
 		$command = host_manager.port_forward(*ARGV[-1].split(//))
 	when 'ssh'
