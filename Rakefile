@@ -21,7 +21,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{A class and command line utility that allows simple management of ssh hosts and remote folders. E.g. logging in to a remote server becomes as easy as 'hm l y'.}
   gem.email = "github@edmundhighcock.com"
   gem.authors = ["Edmund Highcock"]
-	gem.required_ruby_version = '> 1.9.1'
+	gem.required_ruby_version = '>= 1.9.1'
 	gem.rdoc_options << '--main' << 'lib/hostmanager.rb'
   # dependencies defined in Gemfile
 end

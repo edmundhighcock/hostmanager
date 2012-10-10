@@ -134,11 +134,11 @@ end
 #
 #== Examples
 #
-# hm add m myname@myhost
-# hm x m
-# hm list
-# hm scp m:my_file h:. 
-# hm rsync -o av m:source/path h:dest/path 
+#  hm add m myname@myhost
+#  hm x m
+#  hm list
+#  hm scp m:my_file h:. 
+#  hm rsync -o av m:source/path h:dest/path 
 #
 #== Command Manual
 #
@@ -149,7 +149,8 @@ end
 #  hm l <letter> -- Login to a host with ssh 
 #  hm x <letter> -- Login to a host with ssh -X
 #  hm scp <letter1>:<file1> <letter2>:<file2> -- Copy file1 from host letter1 to host letter2
-#  hm rsync <letter1>:<path1> <letter2>:<path2> -- Sync path1 on host letter1 to path2 on host letter2 using rsync
+#  hm rsync <letter1>:<path1> <letter2>:<path2> -- Sync path1 on host 
+#       letter1 to path2 on host letter2 using rsync
 #  hm sshfs <letter>:<path> <localpath> -- Mount path on host letter to localpath using sshfs
 #
 #=== Options
@@ -157,7 +158,6 @@ end
 #  -z --- host is a zero conf host
 #  -o <optionstring> -- Add optionstring to command   
 #  -T -- 'test': print out the resulting command without running it
-
 
 class HostManager
 	attr_accessor :host_list, :hosts, :forwards, :content_list, :option_string
